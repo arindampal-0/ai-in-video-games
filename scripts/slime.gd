@@ -1,9 +1,8 @@
 extends CharacterBody2D
 
 @export var player: CharacterBody2D
-
-var SPEED = 50.0
-var MIN_DISTANCE = 50.0
+@export var min_distance: float = 50.0
+@export var speed: float = 50.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,8 +11,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var direction = global_position.direction_to(player.global_position)
-	if global_position.distance_to(player.global_position) > MIN_DISTANCE:
-		velocity = direction * SPEED
+	if global_position.distance_to(player.global_position) > min_distance:
+		velocity = direction * speed
 	else:
 		velocity = Vector2.ZERO
 	
