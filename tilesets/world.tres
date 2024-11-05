@@ -1,7 +1,9 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://dyf8rdx5hnj8a"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://dyf8rdx5hnj8a"]
 
 [ext_resource type="Texture2D" uid="uid://dnsbtnt576rnb" path="res://assets/tilesets/world/plains.png" id="1_gsoek"]
 [ext_resource type="Texture2D" uid="uid://o2vcmlueoj2m" path="res://assets/tilesets/world/grass.png" id="2_jepxm"]
+[ext_resource type="Texture2D" uid="uid://biuol7u7gersc" path="res://assets/tilesets/world/objects.png" id="3_x0coi"]
+[ext_resource type="Texture2D" uid="uid://qh2algk7elu3" path="res://assets/tilesets/world/chest_01.png" id="4_yp7w3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c5ups"]
 texture = ExtResource("1_gsoek")
@@ -196,6 +198,27 @@ texture = ExtResource("2_jepxm")
 0:0/0/terrains_peering_bit/top_side = 1
 0:0/0/terrains_peering_bit/top_right_corner = 1
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ud4dx"]
+texture = ExtResource("3_x0coi")
+0:5/size_in_atlas = Vector2i(3, 4)
+0:5/0 = 0
+6:7/size_in_atlas = Vector2i(2, 2)
+6:7/0 = 0
+8:6/size_in_atlas = Vector2i(2, 3)
+8:6/0 = 0
+10:7/size_in_atlas = Vector2i(2, 2)
+10:7/0 = 0
+11:2/size_in_atlas = Vector2i(1, 2)
+11:2/0 = 0
+10:0/size_in_atlas = Vector2i(2, 1)
+10:0/0 = 0
+5:0/0 = 0
+0:0/0 = 0
+0:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4jr3k"]
+texture = ExtResource("4_yp7w3")
+
 [resource]
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Dirt"
@@ -204,3 +227,5 @@ terrain_set_0/terrain_1/name = "Grass"
 terrain_set_0/terrain_1/color = Color(0.28752, 0.502367, 0.280983, 1)
 sources/0 = SubResource("TileSetAtlasSource_c5ups")
 sources/1 = SubResource("TileSetAtlasSource_x0dpg")
+sources/2 = SubResource("TileSetAtlasSource_ud4dx")
+sources/3 = SubResource("TileSetAtlasSource_4jr3k")
