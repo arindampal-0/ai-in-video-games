@@ -288,9 +288,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q7c1j"]
-radius = 8.0
-height = 24.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_boars"]
+radius = 5.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_xjq1u")
@@ -303,5 +302,7 @@ autoplay = "idle_front"
 frame_progress = 0.699264
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -11)
-shape = SubResource("CapsuleShape2D_q7c1j")
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_boars")
