@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 #@onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 @export var remote_camera: NodePath = NodePath("")
 
@@ -58,28 +59,46 @@ func _physics_process(delta: float) -> void:
 		elif direction.y > 0:
 			dir = Direction.FRONT
 
-	if state == State.IDLE:
-		if dir == Direction.BACK:
-			animated_sprite.play("idle_back")
-		elif dir == Direction.LEFT:
-			animated_sprite.play("idle_right")
-			animated_sprite.flip_h = true
-		elif dir == Direction.RIGHT:
-			animated_sprite.play("idle_right")
-			animated_sprite.flip_h = false
-		else:
-			animated_sprite.play("idle_front")
-	elif state == State.WALK:
-		if dir == Direction.BACK:
-			animated_sprite.play("walk_back")
-		elif dir == Direction.LEFT:
-			animated_sprite.play("walk_right")
-			animated_sprite.flip_h = true
-		elif dir == Direction.RIGHT:
-			animated_sprite.play("walk_right")
-			animated_sprite.flip_h = false
-		else:
-			animated_sprite.play("walk_front")
+	#if state == State.IDLE:
+		#if dir == Direction.BACK:
+			#animated_sprite.play("idle_back")
+		#elif dir == Direction.LEFT:
+			#animated_sprite.play("idle_right")
+			#animated_sprite.flip_h = true
+		#elif dir == Direction.RIGHT:
+			#animated_sprite.play("idle_right")
+			#animated_sprite.flip_h = false
+		#else:
+			#animated_sprite.play("idle_front")
+	#elif state == State.WALK:
+		#if dir == Direction.BACK:
+			#animated_sprite.play("walk_back")
+		#elif dir == Direction.LEFT:
+			#animated_sprite.play("walk_right")
+			#animated_sprite.flip_h = true
+		#elif dir == Direction.RIGHT:
+			#animated_sprite.play("walk_right")
+			#animated_sprite.flip_h = false
+		#else:
+			#animated_sprite.play("walk_front")
+			
+	var animation_blend_position = Vector2(0, -1)
+	match dir:
+		Direction.BACK:
+			animation_blend_position = Vector2(0, 1)
+		Direction.LEFT:
+			animation_blend_position = Vector2(-1, 0)
+		Direction.RIGHT:
+			animation_blend_position = Vector2(1, 0)
+
+	# set blend_positions
+	animation_tree.set("parameters/Idle/blend_position", animation_blend_position)
+	# animation_tree.set("parameters/Walk/blend_position", direction.normalized())
+	animation_tree.set("parameters/Walk_fast/BlendSpace2D/blend_position", direction.normalized())
+	
+	# set animation conditioas
+	animation_tree.set("parameters/conditions/idle", state == State.IDLE)
+	animation_tree.set("parameters/conditions/walk", state == State.WALK)
 	
 	velocity = direction.normalized() * SPEED
 
