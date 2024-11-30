@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var player: CharacterBody2D
+@export var follow_player: bool = true
 @export var min_distance: float = 50.0
 @export var speed: float = 50.0
 
@@ -29,7 +30,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var direction = global_position.direction_to(player.global_position)
-	if global_position.distance_to(player.global_position) > min_distance:
+	if follow_player && global_position.distance_to(player.global_position) > min_distance:
 		velocity = direction * speed
 		
 		if direction.x < 0:

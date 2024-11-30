@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+# @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 #@onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 
-@export var remote_camera: NodePath = NodePath("")
+@export var remote_camera: Camera2D
 
 const SPEED = 120.0
 
@@ -21,15 +21,14 @@ var dir: Direction = Direction.FRONT
 
 enum State {
 	IDLE,
-	WALK
+	WALK,
+	ATTACK
 }
 
 var state: State = State.IDLE
 
 func _ready() -> void:
-	#print("remote camera", remote_camera)
-	#remote_transform_2d.set_remote_node(remote_camera)
-	pass
+	animation_tree.active = true
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -45,7 +44,9 @@ func _physics_process(delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")
 	direction.y = Input.get_axis("move_up", "move_down")
 
-	if direction.length() == 0:
+	if Input.is_action_just_released("attack"):
+		state = State.ATTACK
+	elif direction.length() == 0:
 		state = State.IDLE
 	else:
 		state = State.WALK
@@ -59,33 +60,10 @@ func _physics_process(delta: float) -> void:
 		elif direction.y > 0:
 			dir = Direction.FRONT
 
-	#if state == State.IDLE:
-		#if dir == Direction.BACK:
-			#animated_sprite.play("idle_back")
-		#elif dir == Direction.LEFT:
-			#animated_sprite.play("idle_right")
-			#animated_sprite.flip_h = true
-		#elif dir == Direction.RIGHT:
-			#animated_sprite.play("idle_right")
-			#animated_sprite.flip_h = false
-		#else:
-			#animated_sprite.play("idle_front")
-	#elif state == State.WALK:
-		#if dir == Direction.BACK:
-			#animated_sprite.play("walk_back")
-		#elif dir == Direction.LEFT:
-			#animated_sprite.play("walk_right")
-			#animated_sprite.flip_h = true
-		#elif dir == Direction.RIGHT:
-			#animated_sprite.play("walk_right")
-			#animated_sprite.flip_h = false
-		#else:
-			#animated_sprite.play("walk_front")
-			
-	var animation_blend_position = Vector2(0, -1)
+	var animation_blend_position = Vector2(0, 1)
 	match dir:
 		Direction.BACK:
-			animation_blend_position = Vector2(0, 1)
+			animation_blend_position = Vector2(0, -1)
 		Direction.LEFT:
 			animation_blend_position = Vector2(-1, 0)
 		Direction.RIGHT:
@@ -93,12 +71,13 @@ func _physics_process(delta: float) -> void:
 
 	# set blend_positions
 	animation_tree.set("parameters/Idle/blend_position", animation_blend_position)
-	# animation_tree.set("parameters/Walk/blend_position", direction.normalized())
-	animation_tree.set("parameters/Walk_fast/BlendSpace2D/blend_position", direction.normalized())
+	animation_tree.set("parameters/Walk/BlendSpace2D/blend_position", animation_blend_position)
+	animation_tree.set("parameters/Attack/BlendSpace2D/blend_position", animation_blend_position)
 	
 	# set animation conditioas
 	animation_tree.set("parameters/conditions/idle", state == State.IDLE)
 	animation_tree.set("parameters/conditions/walk", state == State.WALK)
+	animation_tree.set("parameters/conditions/attack", state == State.ATTACK)
 	
 	velocity = direction.normalized() * SPEED
 
