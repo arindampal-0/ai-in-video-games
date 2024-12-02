@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var player: CharacterBody2D
+@export var grid: Node2D
 @export var follow_player: bool = true
 @export var min_distance: float = 50.0
 @export var speed: float = 50.0
@@ -25,8 +26,8 @@ var dir: Direction = Direction.FRONT
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print(player)
-	pass # Replace with function body.
+	#print(player)
+	grid.call("add_enemy_cell", position)
 
 func _physics_process(delta: float) -> void:
 	var direction = global_position.direction_to(player.global_position)
@@ -72,6 +73,8 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("walk_front")
 	
 	move_and_slide()
+	
+	grid.call("update_enemy_cell", position)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

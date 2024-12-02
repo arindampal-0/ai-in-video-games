@@ -15,6 +15,12 @@ run/main_scene="res://scenes/game1.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[global_group]
+
+Player=""
+Obstacle=""
+Enemy=""
+
 [input]
 
 move_left={

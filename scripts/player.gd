@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 @export var remote_camera: Camera2D
+@export var grid: Node2D
 
 const SPEED = 120.0
 
@@ -29,6 +30,7 @@ var state: State = State.IDLE
 
 func _ready() -> void:
 	animation_tree.active = true
+	grid.call("add_player_cell", position)
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -82,3 +84,5 @@ func _physics_process(delta: float) -> void:
 	velocity = direction.normalized() * SPEED
 
 	move_and_slide()
+	
+	grid.call("update_player_cell", position)
